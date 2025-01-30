@@ -1,14 +1,14 @@
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.Services
+    .AddCarterWithAssemblies(typeof(CatalogModule).Assembly);
 builder.Services
     .AddCatalogModule(builder.Configuration)
     .AddBasketModule(builder.Configuration)
     .AddOrderingModule(builder.Configuration);
 
-var app = builder.Build();
+WebApplication app = builder.Build();
+app.MapCarter();
 app.UseCatalogModule();
 app.UseBasketModule();
 app.UseOrderingModule();
-
-//app.MapGet("/", () => "Hello World!");
-
 app.Run();
