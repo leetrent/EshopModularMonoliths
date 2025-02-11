@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Behaviors;
 using Shared.Data.Interceptors;
 
 namespace Catalog
@@ -12,6 +13,7 @@ namespace Catalog
             services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

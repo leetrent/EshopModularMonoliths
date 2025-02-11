@@ -19,7 +19,6 @@ public class CreateProductCommandValidator: AbstractValidator<CreateProductComma
 public class CreateProductHandler
     (
         CatalogDbContext dbContext, 
-        IValidator<CreateProductCommand> validator, 
         ILogger<CreateProductHandler> logger
     )
     : ICommandHandler<CreateProductCommand, CreateProductResult>
@@ -31,19 +30,6 @@ public class CreateProductHandler
         ///////////////////////////////////////////////////////////////////////////////////
         logger.LogInformation("CreateProductHandler.Handle called with {$Commane}", command);
 
-        ///////////////////////////////////////////////////////////////////////////////////
-        // VALIDATE INCOMING PRODUCT
-        ///////////////////////////////////////////////////////////////////////////////////
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-        var validationErrors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
-        if (validationErrors.Any())
-        {
-            throw new ValidationException(validationErrors.FirstOrDefault());
-        }
-
-        ////////////////////////////////////////////////////
-        // Save product to database
-        ////////////////////////////////////////////////////
         Product product = CreateNewProduct(command.Product);
         dbContext.Products.Add(product);
         await dbContext.SaveChangesAsync(cancellationToken);
