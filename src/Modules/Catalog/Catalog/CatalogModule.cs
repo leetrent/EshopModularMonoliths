@@ -14,6 +14,8 @@ namespace Catalog
                 config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
 
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
             var connectionString = configuration.GetConnectionString("Database");
 
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
