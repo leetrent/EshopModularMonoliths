@@ -24,7 +24,7 @@ public class DeleteProductHandler(CatalogDbContext dbContext)
         Product? product = await dbContext.Products.FindAsync([command.ProductId], cancellationToken: cancellationToken);
         if (product is null)
         {
-            throw new Exception($"Product not found with ID of '{command.ProductId}'. Cannot delete product.");
+            throw new ProductNotFoundException(command.ProductId);
         }
         dbContext.Products.Remove(product);
         await dbContext.SaveChangesAsync(cancellationToken);

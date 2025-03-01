@@ -1,6 +1,4 @@
 ﻿
-using Catalog.Products.Features.CreateProduct;
-
 namespace Catalog.Products.Features.UpdateProduct
 {
     public record UpdateProductResult(bool IsSuccess);
@@ -25,7 +23,7 @@ namespace Catalog.Products.Features.UpdateProduct
             Product? product = await dbContext.Products.FindAsync([command.Product.Id], cancellationToken: cancellationToken);
             if (product is null)
             {
-                throw new Exception($"Product not found with ID of '{command.Product.Id}'. Cannot update product.");
+                throw new ProductNotFoundException(command.Product.Id);
             }
 
             UpdateProductWithNewValues(product, command.Product);
